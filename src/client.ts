@@ -1,27 +1,31 @@
-import {EventEmitter} from 'events';
-import getIPCRenderer from './getIPCRenderer';
+///<reference path="../node_modules/@types/node/ts3.2/index.d.ts" />
+import { EventEmitter } from 'events';
 
 class Client extends EventEmitter {
-    constructor() {
+    private _cid : number;
+    private _available : boolean;
+    private _subscriptions : Map<String, Function[]>;
+    private _ipcRenderer : any;
+
+    constructor(getRenderer : Function) {
         super();
         this._cid = 1;
         this._available = false;
         this._subscriptions = new Map();
+        this._ipcRenderer = getRenderer();
 
         this.setupIPC();
     }
 
-    setupIPC() {
-        this._ipcRenderer = getIPCRenderer();
-
+    private setupIPC() : void {
         if (this._ipcRenderer) {
             this.setupIPCBridge(() => {
-                this.emit(this.availableChanged, true);
+                super.emit(this.availableChanged, true);
             });
         }
     }
 
-    setupIPCBridge(callback) {
+    private setupIPCBridge(callback : Function) : void {
         this._ipcRenderer.on('heartbeat', () => {
             this._available = true;
             callback();
@@ -30,7 +34,7 @@ class Client extends EventEmitter {
         this._ipcRenderer.send('healthcheck');
     }
 
-    _handleEvent(event) {
+    private handleEvent(event : string) {
         return (sender, message) => {
             let subs = this._subscriptions.get(event);
     
@@ -44,15 +48,15 @@ class Client extends EventEmitter {
         }
     }
 
-    get availableChanged() {
+    get availableChanged() : string {
         return 'availableChanged';
     }
 
-    get available() {
+    get available() : boolean {
         return this._available;
     }
 
-    sendMessage(event, message) {
+    sendMessage(event : string, message : any) : Promise<any> {
         return new Promise((resolve, reject) => {
             if (!this.available) {
                 reject('IPC Service not available');
@@ -61,7 +65,7 @@ class Client extends EventEmitter {
     
             let corid = this._cid++;
             const cbevent = `cid${corid}`;
-            this._ipcRenderer.on(cbevent, (event, data) => {
+            this._ipcRenderer.on(cbevent, (event : string, data : any) => {
                 this._ipcRenderer.off(cbevent);
                 resolve(data);
             });
@@ -74,7 +78,7 @@ class Client extends EventEmitter {
         });
     }
 
-    subscribeEvent(event, callback) {
+    subscribeEvent(event : string, callback : Function) : void {
         if (!this.available) {
             return;
         }
@@ -82,7 +86,7 @@ class Client extends EventEmitter {
         let sub = this._subscriptions.get(event);
 
         if (!sub) {
-            this._ipcRenderer.on(event, this._handleEvent(event).bind(this));
+            this._ipcRenderer.on(event, this.handleEvent(event).bind(this));
             this._subscriptions.set(event, [callback]);
         }
         else {
@@ -92,7 +96,7 @@ class Client extends EventEmitter {
         this._ipcRenderer.send('subscribe', event);
     }
 
-    unsubcribeEvent(event, callback) {
+    unsubcribeEvent(event : string, callback : Function) : void {
         if (!this.available) {
             return;
         }

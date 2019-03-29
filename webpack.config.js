@@ -2,19 +2,28 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-    entry: './src/index.js',
+    entry: './src/index.ts',
     output: {
         path: path.resolve(__dirname, 'build'),
         filename: './[name].js',
         libraryTarget: 'umd'
     },
+    resolve: {
+        extensions: [".ts", ".js", ""]
+    },
     module: {
         rules: [
             {
-                test: /\.js$/,
+                test: /\.ts$/,
                 exclude: /node_modules/,
-                loader: 'babel-loader'
+                loader: 'ts-loader'
             }
+        ]
+    },
+    resolve: {
+        modules: [
+            "./src",
+            "./node_modules"
         ]
     }
 }

@@ -1,4 +1,9 @@
-export default function() {
+
+declare global {
+    interface Window { require: any }
+}
+
+const getRenderer = () : any => {
     let retVal;
     if (window.require) {
         const electron = window.require('electron');
@@ -6,4 +11,8 @@ export default function() {
     }
 
     return retVal;
+}
+
+export {
+    getRenderer
 }
