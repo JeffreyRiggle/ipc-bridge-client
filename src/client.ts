@@ -66,7 +66,7 @@ class Client extends EventEmitter {
             let corid = this._cid++;
             const cbevent = `cid${corid}`;
             this._ipcRenderer.on(cbevent, (event : string, data : any) => {
-                this._ipcRenderer.off(cbevent);
+                this._ipcRenderer.removeListener(cbevent);
                 resolve(data);
             });
     

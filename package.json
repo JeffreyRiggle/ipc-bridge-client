@@ -1,6 +1,6 @@
 {
   "name": "@jeffriggle/ipc-bridge-client",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Communication bridge client for electrons ipc",
   "main": "index.js",
   "repository": {
