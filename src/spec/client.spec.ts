@@ -53,6 +53,15 @@ describe('ipc client', function() {
             it('should send the message', () => {
                 expect(ipcMock.sentMessages.length).to.be.equal(1);
             });
+
+            it('should not leave any events', () => {
+                let eventsLeft = false;
+                ipcMock.invocationMap.forEach((value, key) => {
+                    eventsLeft = eventsLeft || key.startsWith('cid');
+                });
+
+                expect(eventsLeft).to.be.equal(false);
+            })
         });
     })
 });

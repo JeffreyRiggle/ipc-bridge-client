@@ -11,7 +11,7 @@ class IPCMock {
         this.invocationMap.set(event, callback);
     }
 
-    off(event : string, callback : Function) : void {
+    removeAllListeners(event : string) : void {
         this.invocationMap.delete(event);
     }
 
