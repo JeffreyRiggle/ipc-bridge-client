@@ -55,6 +55,8 @@ client.subscribeEvent('customizablemessage', () => {
     // Logic for when message comes from main process
 });
 ```
+## Example
+Some simple examples of this can be found at [ipc-bridge](https://github.com/JeffreyRiggle/ipc-bridge)
 
 ## Licence
 ipc-bridge-client is released under [MIT](./LICENSE)
