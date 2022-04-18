@@ -1,4 +1,4 @@
-///<reference path="../node_modules/@types/node/ts3.2/index.d.ts" />
+///<reference path="../node_modules/@types/node/index.d.ts" />
 import { EventEmitter } from 'events';
 
 class Client extends EventEmitter {
@@ -17,7 +17,7 @@ class Client extends EventEmitter {
         this.setupIPC();
     }
 
-    private setupIPC() : void {
+    private setupIPC(): void {
         if (this._ipcRenderer) {
             this.setupIPCBridge(() => {
                 super.emit(this.availableChanged, true);
@@ -25,7 +25,7 @@ class Client extends EventEmitter {
         }
     }
 
-    private setupIPCBridge(callback : Function) : void {
+    private setupIPCBridge(callback : Function): void {
         this._ipcRenderer.on('heartbeat', () => {
             this._available = true;
             callback();
@@ -48,15 +48,15 @@ class Client extends EventEmitter {
         }
     }
 
-    get availableChanged() : string {
+    get availableChanged(): string {
         return 'availableChanged';
     }
 
-    get available() : boolean {
+    get available(): boolean {
         return this._available;
     }
 
-    sendMessage(event : string, message : any) : Promise<any> {
+    sendMessage(event : string, message : any): Promise<any> {
         return new Promise((resolve, reject) => {
             if (!this.available) {
                 reject('IPC Service not available');
@@ -78,7 +78,7 @@ class Client extends EventEmitter {
         });
     }
 
-    subscribeEvent(event : string, callback : Function) : void {
+    subscribeEvent(event : string, callback : Function): void {
         if (!this.available) {
             return;
         }
@@ -96,7 +96,7 @@ class Client extends EventEmitter {
         this._ipcRenderer.send('subscribe', event);
     }
 
-    unsubcribeEvent(event : string, callback : Function) : void {
+    unsubcribeEvent(event : string, callback : Function): void {
         if (!this.available) {
             return;
         }

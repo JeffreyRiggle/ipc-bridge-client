@@ -1,5 +1,5 @@
-import Client from '../client.ts';
-import IPCMock from './ipcMock.ts';
+import Client from '../client';
+import IPCMock from './ipcMock';
 import { expect } from 'chai';
 
 describe('ipc client', function() {
