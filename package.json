@@ -1,8 +1,8 @@
 {
   "name": "@jeffriggle/ipc-bridge-client",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Communication bridge client for electrons ipc",
-  "main": "src/index.ts",
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/JeffreyRiggle/ipc-bridge-client.git"

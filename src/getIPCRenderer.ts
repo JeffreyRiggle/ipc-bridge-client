@@ -1,4 +1,3 @@
-
 declare global {
     interface Window { require: any }
     export const window: Window;

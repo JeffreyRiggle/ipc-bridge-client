@@ -7,7 +7,7 @@ describe('ipc client', function() {
     let client: Client;
     describe('when ipc is not available', function() {
         beforeEach(() => {
-            client = new Client(() => undefined);
+            client = new Client(() => undefined as unknown);
         });
 
         it('should not be available', () => {
